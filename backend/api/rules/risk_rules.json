@@ -1,0 +1,91 @@
+{
+  "risk_levels": {
+    "LOW": {
+      "level": "Low",
+      "score": 1,
+      "color": "#10b981",
+      "badge_class": "bg-emerald-500/20 text-emerald-400 border-emerald-500/30",
+      "description": "Safe driving conditions with minimal atmospheric hazard."
+    },
+    "MODERATE": {
+      "level": "Moderate",
+      "score": 2,
+      "color": "#3b82f6",
+      "badge_class": "bg-blue-500/20 text-blue-400 border-blue-500/30",
+      "description": "Noticeable weather impact. Increased stopping distance and minor steering adjustments needed."
+    },
+    "HIGH": {
+      "level": "High",
+      "score": 3,
+      "color": "#f59e0b",
+      "badge_class": "bg-amber-500/20 text-amber-400 border-amber-500/30",
+      "description": "Hazardous conditions. Reduced visibility, hydroplaning, or moderate crosswind gusts."
+    },
+    "SEVERE": {
+      "level": "Severe",
+      "score": 4,
+      "color": "#f97316",
+      "badge_class": "bg-orange-500/20 text-orange-400 border-orange-500/30",
+      "description": "Extremely hazardous. High rollover danger or near-zero traction."
+    },
+    "NO_TRAVEL": {
+      "level": "No Travel",
+      "score": 5,
+      "color": "#ef4444",
+      "badge_class": "bg-rose-500/20 text-rose-400 border-rose-500/30",
+      "description": "Road shutdown or imminent rollover risk. Commercial truck operations should halt."
+    }
+  },
+  "condition_thresholds": {
+    "wind_mph": [
+      { "level": "LOW", "min": 0, "max": 24.999 },
+      { "level": "MODERATE", "min": 25.0, "max": 34.999 },
+      { "level": "HIGH", "min": 35.0, "max": 44.999 },
+      { "level": "SEVERE", "min": 45.0, "max": 54.999 },
+      { "level": "NO_TRAVEL", "min": 55.0, "max": 999.0 }
+    ],
+    "rain_in_hr": [
+      { "level": "LOW", "min": 0, "max": 0.0999 },
+      { "level": "MODERATE", "min": 0.10, "max": 0.2499 },
+      { "level": "HIGH", "min": 0.25, "max": 0.4999 },
+      { "level": "SEVERE", "min": 0.50, "max": 1.00 },
+      { "level": "NO_TRAVEL", "min": 1.0001, "max": 999.0 }
+    ],
+    "snow_in_hr": [
+      { "level": "LOW", "min": 0, "max": 0.4999 },
+      { "level": "MODERATE", "min": 0.50, "max": 0.9999 },
+      { "level": "HIGH", "min": 1.00, "max": 1.9999 },
+      { "level": "SEVERE", "min": 2.00, "max": 3.00 },
+      { "level": "NO_TRAVEL", "min": 3.0001, "max": 999.0 }
+    ]
+  },
+  "load_rules": [
+    {
+      "id": "extreme_wind_any_load",
+      "name": "Extreme Wind Rollover",
+      "condition": "wind_mph >= 55.0",
+      "target_level": "NO_TRAVEL",
+      "description": "≥ 55 mph wind results in No Travel for all loads."
+    },
+    {
+      "id": "severe_wind_heavy_load",
+      "name": "Heavy Load High Crosswind",
+      "condition": "wind_mph >= 45.0 and wind_mph < 55.0 and load_weight_lbs > 30000",
+      "target_level": "NO_TRAVEL",
+      "description": "45–54 mph wind + > 30,000 lb load results in No Travel."
+    },
+    {
+      "id": "high_wind_max_load",
+      "name": "Max Weight Crosswind Escalation",
+      "condition": "wind_mph >= 35.0 and wind_mph < 45.0 and load_weight_lbs > 40000",
+      "target_level": "SEVERE",
+      "description": "35–44 mph wind + > 40,000 lb load escalates to Severe."
+    }
+  ],
+  "recommendation_priority": [
+    { "order": 1, "criterion": "fewest_severe_miles", "description": "Fewest Severe and No Travel miles" },
+    { "order": 2, "criterion": "fewest_high_miles", "description": "Fewest High risk miles" },
+    { "order": 3, "criterion": "lowest_average_risk", "description": "Lowest average checkpoint risk score" },
+    { "order": 4, "criterion": "shortest_travel_time", "description": "Shortest total travel duration" }
+  ]
+}
