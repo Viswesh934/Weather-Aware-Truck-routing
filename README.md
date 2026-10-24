@@ -159,8 +159,7 @@ Weather-Aware-Truck-routing/
 │   └── package.json
 │
 └── docs/
-    ├── third_party_apis.md           # AWS & Open-Meteo REST specifications
-    └── walkthrough.md                # 5-10 minute presentation guide
+    └── third_party_apis.md           # AWS & Open-Meteo REST specifications
 ```
 
 ---
