@@ -11,10 +11,14 @@ export function Header() {
           <h1 className="text-base font-bold text-slate-900 tracking-tight flex items-center gap-2">
             WATR
             <span className="text-xs font-normal text-slate-500">
-              Weather-Aware Truck Routing
+              Weather-Safe Truck Route Planner
             </span>
           </h1>
         </div>
+      </div>
+
+      <div className="text-xs text-slate-500 hidden sm:block">
+        Real-Time Highway Weather &amp; Wind Rollover Safety
       </div>
     </header>
   );
