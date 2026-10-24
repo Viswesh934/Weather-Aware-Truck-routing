@@ -17,17 +17,17 @@ export function HeatmapLayer() {
     if (!heatLayerRef.current) {
       // @ts-ignore - Leaflet.heat extends L
       heatLayerRef.current = L.heatLayer(currentPoints, {
-        radius: 35,
-        blur: 25,
-        maxZoom: 10,
+        radius: 45,
+        blur: 28,
+        maxZoom: 12,
         max: 1.0,
-        minOpacity: 0.35,
+        minOpacity: 0.45,
         gradient: {
-          0.2: '#22c55e',
-          0.4: '#3b82f6',
-          0.6: '#f59e0b',
-          0.8: '#f97316',
-          1.0: '#ef4444',
+          0.2: '#22c55e', // Green (Calm/Low)
+          0.4: '#3b82f6', // Blue (Moderate)
+          0.6: '#f59e0b', // Amber (High)
+          0.8: '#f97316', // Orange (Severe)
+          1.0: '#ef4444', // Red (No Travel)
         },
       }).addTo(map);
     } else {

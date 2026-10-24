@@ -1,26 +1,46 @@
-import { MapContainer, TileLayer } from 'react-leaflet';
+import { useEffect } from 'react';
+import { MapContainer, TileLayer, useMap } from 'react-leaflet';
 import { RouteLayer } from './RouteLayer';
 import { HeatmapLayer } from './HeatmapLayer';
 import { useTripStore } from '../store/useTripStore';
 
+function AutoFitBounds({ coordinates }: { coordinates?: [number, number][] }) {
+  const map = useMap();
+
+  useEffect(() => {
+    if (coordinates && coordinates.length > 0) {
+      const latLngs = coordinates.map(([lon, lat]) => [lat, lon] as [number, number]);
+      map.fitBounds(latLngs, { padding: [60, 60], maxZoom: 11 });
+    }
+  }, [coordinates, map]);
+
+  return null;
+}
+
 export function MapViewport() {
   const { routesData, selectedRouteId } = useTripStore();
-  const activeRoute = routesData?.routes.find((r) => r.id === selectedRouteId);
 
   return (
     <div className="flex-1 w-full h-full relative">
       <MapContainer
-        center={[39.8283, -98.5795]} // Center of contiguous US
+        center={[39.8283, -98.5795]} // Center of US
         zoom={4}
         scrollWheelZoom={true}
         className="w-full h-full z-0"
       >
-        {/* Esri World Light Gray Canvas - 100% free, high-performance, no tile policy errors */}
+        {/* Esri World Street Map - Crisp city names, interstate highway numbers, clean contrast */}
         <TileLayer
-          attribution="Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ"
-          url="https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}"
-          maxZoom={16}
+          attribution="Tiles &copy; Esri &mdash; Sources: Esri, DeLorme, NAVTEQ, USGS"
+          url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}"
+          maxZoom={18}
         />
+
+        {/* Dynamic Auto-Fit Bounds when route loads */}
+        {routesData?.routes.find((r) => r.id === selectedRouteId) && (
+          <AutoFitBounds
+            coordinates={routesData.routes.find((r) => r.id === selectedRouteId)?.geometry.coordinates}
+          />
+        )}
 
         {/* 0-48h Corridor Weather Heatmap Layer */}
         {routesData && <HeatmapLayer />}
@@ -30,16 +50,6 @@ export function MapViewport() {
           <RouteLayer key={route.id} route={route} isSelected={route.id === selectedRouteId} />
         ))}
       </MapContainer>
-
-      {/* Floating Active Route Rationale Banner (only shown when a route is actually evaluated) */}
-      {activeRoute && routesData?.recommendation_reason && (
-        <div className="absolute top-4 left-4 z-1000 max-w-md bg-white/95 backdrop-blur border border-slate-200 rounded-lg p-3 shadow-md text-xs">
-          <div className="font-semibold text-slate-900 mb-0.5">{activeRoute.name}</div>
-          <div className="text-slate-600 leading-relaxed">
-            {routesData.recommendation_reason}
-          </div>
-        </div>
-      )}
     </div>
   );
 }

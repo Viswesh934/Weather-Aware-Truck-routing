@@ -1,5 +1,5 @@
 """
-Route Recommendation & Ranking Engine
+Route Recommendation & Ranking Engine (Step 3)
 
 Ranks evaluated routes based on strict lexicographical prioritization:
 1. Fewest Severe miles (and No Travel miles)
@@ -16,12 +16,11 @@ def generate_recommendation_reason(
     all_routes: List[Dict[str, Any]],
 ) -> str:
     """
-    Synthesizes clear, business-defensible explanation text for commercial dispatch.
+    Synthesizes clear, driver-friendly dispatch advice in plain English.
     """
     rec_sum = recommended_route.get("risk_summary", {})
     rec_sev = rec_sum.get("severe_miles", 0.0) + rec_sum.get("no_travel_miles", 0.0)
     rec_high = rec_sum.get("high_miles", 0.0)
-    rec_avg = recommended_route.get("average_risk_score", 1.0)
 
     other_routes = [r for r in all_routes if r.get("id") != recommended_route.get("id")]
     max_other_sev = max(
@@ -36,27 +35,27 @@ def generate_recommendation_reason(
 
     if rec_sev == 0 and max_other_sev > 0:
         return (
-            f"Safest route: Completely avoids {max_other_sev:.0f} miles of Severe / No Travel conditions "
-            f"present on alternative corridors with optimal transit efficiency."
+            f"Recommended: Completely avoids {max_other_sev:.0f} miles of Severe weather and high winds "
+            f"found on the other highway options, with virtually no extra drive time."
         )
 
     if rec_sev < max_other_sev:
         saved_sev = max_other_sev - rec_sev
-        return f"Minimizes danger: Reduces Severe hazard exposure by {saved_sev:.0f} miles compared to alternative routes."
+        return f"Safest path: Keeps you out of {saved_sev:.0f} miles of severe weather compared to alternative routes."
 
     if rec_high == 0 and max_other_high > 0:
         return (
-            f"Optimal safety profile: Zero High or Severe risk miles, offering stable driving conditions "
-            f"across the entire corridor."
+            f"Best choice: Clear skies and safe winds the entire way, avoiding {max_other_high:.0f} miles of "
+            f"gusty crosswinds on the other roads."
         )
 
     if rec_high < max_other_high:
         return (
-            f"Recommended for lowest weather disruption: {rec_high:.0f} High risk miles vs {max_other_high:.0f} miles "
-            f"on alternatives."
+            f"Recommended for easiest driving: Only {rec_high:.0f} miles of noticeable wind vs {max_other_high:.0f} miles "
+            f"on alternative corridors."
         )
 
-    return f"Recommended route: Lowest overall weather exposure (average risk score {rec_avg:.2f}) and shortest travel time."
+    return "Best route: Optimal driving conditions with the shortest travel time and light weather along the highway."
 
 
 def rank_routes(evaluated_routes: List[Dict[str, Any]]) -> Tuple[str, str, List[Dict[str, Any]]]:

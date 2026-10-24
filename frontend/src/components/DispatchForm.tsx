@@ -10,7 +10,7 @@ export function DispatchForm() {
       <div className="space-y-3">
         <div>
           <label className="block text-xs font-medium text-slate-700 mb-1 flex items-center gap-1.5">
-            <MapPin className="w-3.5 h-3.5 text-emerald-600" /> Origin
+            <MapPin className="w-3.5 h-3.5 text-emerald-600" /> Starting Location
           </label>
           <input
             type="text"
@@ -52,7 +52,7 @@ export function DispatchForm() {
       <div>
         <div className="flex justify-between items-center mb-1">
           <label className="text-xs font-medium text-slate-700 flex items-center gap-1.5">
-            <Weight className="w-3.5 h-3.5 text-slate-700" /> Gross Load Weight
+            <Weight className="w-3.5 h-3.5 text-slate-700" /> Total Truck &amp; Cargo Weight
           </label>
           <span className="text-xs font-mono font-bold text-slate-900 bg-slate-100 px-2 py-0.5 rounded border border-slate-200">
             {params.load_weight_lbs.toLocaleString()} lbs
@@ -68,17 +68,17 @@ export function DispatchForm() {
           className="w-full accent-slate-900 cursor-pointer"
         />
         <div className="flex justify-between text-[10px] text-slate-400 mt-0.5">
-          <span>0 (Empty)</span>
-          <span className="font-medium text-amber-600">&gt;30k (Wind limit)</span>
-          <span className="font-medium text-orange-600">&gt;40k (Severe limit)</span>
-          <span>80k</span>
+          <span>Empty</span>
+          <span className="font-medium text-amber-600">&gt;30k lbs (High Wind Watch)</span>
+          <span className="font-medium text-orange-600">&gt;40k lbs (Heavy Rollover Risk)</span>
+          <span>80k lbs</span>
         </div>
       </div>
 
       {/* Sampling Interval */}
       <div>
         <label className="block text-xs font-medium text-slate-700 mb-1 flex items-center gap-1.5">
-          <Layers className="w-3.5 h-3.5 text-indigo-600" /> Checkpoint Sampling Interval
+          <Layers className="w-3.5 h-3.5 text-indigo-600" /> Check Weather Every
         </label>
         <div className="grid grid-cols-3 gap-1.5">
           {([10, 25, 50] as const).map((interval) => (
@@ -106,10 +106,10 @@ export function DispatchForm() {
         {isLoading ? (
           <>
             <span className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-            <span>Analyzing Route Safety...</span>
+            <span>Checking weather on 3 routes...</span>
           </>
         ) : (
-          <span>Analyze 3 Route Options</span>
+          <span>Find Safest Route</span>
         )}
       </button>
     </div>
