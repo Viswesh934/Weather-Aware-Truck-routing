@@ -1,16 +1,13 @@
 """
-ASGI config for config project.
-
-It exposes the ASGI callable as a module-level variable named ``application``.
-
-For more information on this file, see
-https://docs.djangoproject.com/en/6.1/howto/deployment/asgi/
+ASGI config for Weather-Aware Truck Routing project.
+Exposes the ASGI callable as ``application`` and AWS Lambda handler as ``handler``.
 """
 
 import os
-
 from django.core.asgi import get_asgi_application
+from mangum import Mangum
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 
 application = get_asgi_application()
+handler = Mangum(application)
