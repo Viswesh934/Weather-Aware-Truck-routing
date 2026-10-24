@@ -11,7 +11,7 @@ import requests
 
 
 AWS_LOCATION_API_KEY = os.getenv("AWS_LOCATION_API_KEY", "").strip()
-AWS_REGION = os.getenv("AWS_REGION", "ap-south-1").strip()
+AWS_REGION = os.getenv("AWS_LOCATION_REGION", os.getenv("AWS_REGION", "ap-south-1")).strip()
 
 
 def geocode_place(query_text: str) -> Tuple[float, float]:
@@ -21,7 +21,7 @@ def geocode_place(query_text: str) -> Tuple[float, float]:
     """
     cleaned_query = query_text.strip()
     key = os.getenv("AWS_LOCATION_API_KEY", AWS_LOCATION_API_KEY).strip()
-    region = os.getenv("AWS_REGION", AWS_REGION).strip()
+    region = os.getenv("AWS_LOCATION_REGION", os.getenv("AWS_REGION", AWS_REGION)).strip()
 
     # 1. AWS Places V2 with API Key
     if key:
@@ -63,7 +63,7 @@ def calculate_truck_routes(
     """
     routes: List[Dict[str, Any]] = []
     key = os.getenv("AWS_LOCATION_API_KEY", AWS_LOCATION_API_KEY).strip()
-    region = os.getenv("AWS_REGION", AWS_REGION).strip()
+    region = os.getenv("AWS_LOCATION_REGION", os.getenv("AWS_REGION", AWS_REGION)).strip()
 
     # 1. Primary: AWS Routes V2 with API Key
     if key:
