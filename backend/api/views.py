@@ -11,7 +11,7 @@ from .services.recommendation import rank_routes
 from .services.corridor import generate_corridor_heatmap_matrix
 
 
-@api_view(["GET"])
+@api_view(["GET", "POST", "HEAD"])
 def health_check(request):
     """
     Health check endpoint to verify backend status, timestamp, and environment.
