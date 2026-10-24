@@ -34,8 +34,10 @@ INSTALLED_APPS = [
     "api",
 ]
 
+ENABLE_DJANGO_CORS = os.getenv("ENABLE_DJANGO_CORS", "True").lower() in ("true", "1", "yes")
+
 MIDDLEWARE = [
-    "corsheaders.middleware.CorsMiddleware",  # As high as possible
+    *(["corsheaders.middleware.CorsMiddleware"] if ENABLE_DJANGO_CORS else []),
     "django.middleware.security.SecurityMiddleware",
     "django.middleware.http.ConditionalGetMiddleware",  # ETags and 304 Not Modified
     "django.contrib.sessions.middleware.SessionMiddleware",
