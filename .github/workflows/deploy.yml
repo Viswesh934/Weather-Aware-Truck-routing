@@ -58,13 +58,17 @@ jobs:
           IMAGE_TAG: ${{ github.sha }}
           LAMBDA_FUNCTION_NAME: ${{ secrets.LAMBDA_FUNCTION_NAME || 'watr-backend' }}
         run: |
-          echo "Updating Lambda function: $LAMBDA_FUNCTION_NAME with image: $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
-          aws lambda update-function-code \
-            --function-name "$LAMBDA_FUNCTION_NAME" \
-            --image-uri "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+          if aws lambda get-function --function-name "$LAMBDA_FUNCTION_NAME" > /dev/null 2>&1; then
+            echo "Updating Lambda function: $LAMBDA_FUNCTION_NAME with image: $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+            aws lambda update-function-code \
+              --function-name "$LAMBDA_FUNCTION_NAME" \
+              --image-uri "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
 
-          echo "Waiting for function update to stabilize..."
-          aws lambda wait function-updated --function-name "$LAMBDA_FUNCTION_NAME"
+            echo "Waiting for function update to stabilize..."
+            aws lambda wait function-updated --function-name "$LAMBDA_FUNCTION_NAME"
+          else
+            echo "::warning::Lambda function '$LAMBDA_FUNCTION_NAME' not found in ap-south-1. Container image has been pushed to $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG. Create the function in the AWS Console using this container image."
+          fi
 
       - name: Optional Health Check
         if: ${{ env.LAMBDA_FUNCTION_URL != '' }}
