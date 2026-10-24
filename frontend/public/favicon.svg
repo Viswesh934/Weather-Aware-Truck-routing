@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </linearGradient>
+    <linearGradient id="weather" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0284c7"/>
+      <stop offset="100%" stop-color="#38bdf8"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Rounded Base Background -->
+  <rect width="64" height="64" rx="16" fill="url(#bg)"/>
+  
+  <!-- Weather / Radar Wave Arc (Cyan) -->
+  <path d="M 12 18 Q 24 12 38 15 T 52 13" fill="none" stroke="url(#weather)" stroke-width="3" stroke-linecap="round"/>
+  <path d="M 16 23 Q 28 18 42 21" fill="none" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round" opacity="0.85"/>
+  
+  <!-- Semi Truck Body -->
+  <!-- Trailer Box -->
+  <rect x="10" y="28" width="28" height="20" rx="2" fill="#ffffff"/>
+  <!-- Cab Hood & Cabin -->
+  <path d="M 38 33 H 47 L 53 40 L 54 48 H 38 Z" fill="#ffffff"/>
+  <!-- Cab Window -->
+  <path d="M 40 35 H 46 L 50 40 H 40 Z" fill="#0f172a"/>
+  
+  <!-- Front Bumper -->
+  <rect x="53" y="44" width="2" height="4" rx="1" fill="#94a3b8"/>
+  
+  <!-- Wheels -->
+  <!-- Rear Wheels -->
+  <circle cx="17" cy="49" r="4.5" fill="#0f172a"/>
+  <circle cx="17" cy="49" r="2" fill="#94a3b8"/>
+  <circle cx="28" cy="49" r="4.5" fill="#0f172a"/>
+  <circle cx="28" cy="49" r="2" fill="#94a3b8"/>
+  <!-- Front Wheel -->
+  <circle cx="47" cy="49" r="4.5" fill="#0f172a"/>
+  <circle cx="47" cy="49" r="2" fill="#94a3b8"/>
+</svg>
