@@ -10,4 +10,4 @@ from mangum import Mangum
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 
 application = get_asgi_application()
-handler = Mangum(application)
+handler = Mangum(application, lifespan="off")

@@ -36,6 +36,9 @@ INSTALLED_APPS = [
 
 ENABLE_DJANGO_CORS = os.getenv("ENABLE_DJANGO_CORS", "True").lower() in ("true", "1", "yes")
 
+# Disable automatic redirect to slash to prevent infinite 301 loops with AWS Lambda Function URLs
+APPEND_SLASH = False
+
 MIDDLEWARE = [
     *(["corsheaders.middleware.CorsMiddleware"] if ENABLE_DJANGO_CORS else []),
     "django.middleware.security.SecurityMiddleware",
